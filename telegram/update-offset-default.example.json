@@ -1,6 +1,0 @@
-{
-  "_comment": "Long-poll offset cursor for the Telegram Bot API. Updated by OpenClaw on every getUpdates call; safe to delete (will resume from 0).",
-  "version": 2,
-  "lastUpdateId": 0,
-  "botId": "your_bot_numeric_id"
-}

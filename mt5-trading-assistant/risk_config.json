@@ -1,8 +1,0 @@
-{
-  "_comment": "Signal-validation thresholds. Tunable at runtime and re-read on every script invocation (no restart needed). mt5_auto_tuner.py rewrites this file from recent trade history.",
-  "min_rr": 0.3,
-  "zone_tol": 15.0,
-  "min_distance": 0.2,
-  "volume": 0.05,
-  "_history": []
-}

@@ -6,112 +6,123 @@ work too; the only Windows-specific piece is the MT5 desktop client.
 ## 1. Prerequisites
 
 - **Python 3.10+** — `winget install Python.Python.3.12` (or python.org installer)
+- **Node.js 20+** — required by the OpenClaw gateway
 - **Git** — `winget install Git.Git`
-- **MetaTrader 5 desktop client** — download from your broker, or from
-  https://www.metatrader5.com if you only need the demo server.
-- **A Telegram account** (for the user-bot) and **a Telegram bot** created
-  via @BotFather (for outbound notifications).
-- **An NVIDIA NIM API key** if you want the LLM fallback. Sign up at
+- **MetaTrader 5 desktop client** — from your broker, or
+  https://www.metatrader5.com for the free demo.
+- **A Telegram account** and **a Telegram bot** via @BotFather.
+- **An NVIDIA NIM API key** (optional, for the LLM fallback) —
   https://build.nvidia.com.
 
-## 2. Clone & install Python packages
+## 2. Install OpenClaw upstream
 
 ```powershell
-git clone https://github.com/djebar-rayan/openclaw-trading.git
-cd openclaw-trading
+npm install -g openclaw
+openclaw setup           # creates ~/.openclaw with the framework default
+```
+
+This installs the gateway binary, the bundled plugins, and the CLI.
+
+## 3. Replace the default `~/.openclaw` with this repo
+
+```powershell
+# Optionally back up the empty default
+Move-Item $env:USERPROFILE\.openclaw $env:USERPROFILE\.openclaw.backup
+
+# Clone my setup in its place
+git clone https://github.com/djebar-rayan/openclaw-trading.git $env:USERPROFILE\.openclaw
+cd $env:USERPROFILE\.openclaw
+```
+
+## 4. Python dependencies for the skill + the userbot
+
+```powershell
 python -m venv .venv
 .\.venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-## 3. Acquire Telegram credentials
+## 5. Telegram credentials
 
-1. Go to https://my.telegram.org → **API development tools**.
-2. Copy `api_id` and `api_hash`.
-3. In Telegram, talk to **@BotFather**, create a new bot, copy its token.
-4. Get your own user id with **@userinfobot** (you will use it as the
-   owner allow-list).
+1. Go to https://my.telegram.org → **API development tools**. Copy
+   `api_id` and `api_hash`.
+2. Talk to **@BotFather**, create a new bot, copy its token.
+3. Get your own Telegram user-id via **@userinfobot**.
 
-## 4. Configure `.env`
+## 6. MT5 desktop setup
+
+1. Launch the MT5 client.
+2. Log into your broker.
+3. Press **F7** to enable AutoTrading (toolbar icon must turn green).
+4. Right-click `XAUUSD` in **Market Watch** → **Chart Window**.
+
+## 7. Fill in the templates
 
 ```powershell
 copy .env.example .env
-notepad .env
+copy openclaw.example.json openclaw.json
+copy cron\jobs.example.json cron\jobs.json
+copy workspace\skills\mt5-trading-assistant\references\config_template.py `
+     workspace\skills\mt5-trading-assistant\config.py
+notepad .env                                          # fill every value
+notepad openclaw.json                                 # gateway token + bot token
+notepad cron\jobs.json                                # your Telegram chat-id
+notepad workspace\skills\mt5-trading-assistant\config.py
 ```
 
-Fill in every value. Required:
-
-- `TELEGRAM_API_ID`, `TELEGRAM_API_HASH`, `TELEGRAM_BOT_TOKEN`,
-  `TELEGRAM_OWNER_CHAT_ID`
-- `FASTPATH_ALLOWED_SENDERS` (your user id, possibly comma-separated)
-- `TELEGRAM_LISTENER_A_CHANNELS` / `TELEGRAM_LISTENER_B_CHANNELS` — the
-  signal channels each user-bot account subscribes to. Format:
-  `-1001234567890:Channel Name,-1009876543210:Other Channel`
-- `OPENCLAW_INBOX_BOT` — the `@username` your validated signals get
-  forwarded to (typically your own fast-path bot)
-- `MT5_LOGIN`, `MT5_PASSWORD`, `MT5_SERVER`, `MT5_SYMBOL`
-- `NVIDIA_API_KEY` (optional, only if you want LLM fallback)
-- `GATEWAY_AUTH_TOKEN` — `python -c "import secrets; print(secrets.token_hex(32))"`
-
-## 5. MT5 desktop setup
-
-1. Launch the MT5 client.
-2. Log into your broker with the credentials you just put in `.env`.
-3. Press **F7** to enable AutoTrading (the toolbar icon must be green).
-4. Right-click the symbol you trade (e.g. `XAUUSD`) in Market Watch →
-   **Chart Window** — this ensures the symbol is "selected" for the API.
-
-## 6. Smoke-test
+Generate the gateway auth token:
 
 ```powershell
-python mt5-trading-assistant\scripts\mt5_check.py
+python -c "import secrets; print(secrets.token_hex(32))"
+```
+
+## 8. Generate the device identity
+
+```powershell
+openclaw doctor --fix
+```
+
+OpenClaw creates `identity/device.json` (Ed25519 keypair) and
+`identity/device-auth.json` (operator token). Both are gitignored.
+
+## 9. Smoke-test the MT5 wiring
+
+```powershell
+python workspace\skills\mt5-trading-assistant\scripts\mt5_check.py
 ```
 
 Expected output: connection OK, login OK, balance, equity, current
-bid/ask, any open positions. If you see `CRITICAL: Login failed`, your
-`.env` is wrong; if `CRITICAL: MT5 initialization failed`, the desktop
-client is not running.
+bid/ask, any open positions.
 
-## 7. Start the signal relay
+## 10. Launch the gateway + userbot
 
 ```powershell
-python userbot.py
+gateway.cmd                                           # in one terminal
+python userbot.py                                     # in another (first run prompts for OTP)
 ```
 
-The first run prompts for the phone number and an OTP **for each user-bot
-account**. The OTP arrives inside Telegram itself, not by SMS. Sessions
-are persisted as `*.session` files (gitignored — never share them).
+The userbot's first launch prompts for the phone number + OTP **for each
+listener account**. Sessions persist as `*.session` files (gitignored).
 
-## 8. Start the fast-path bot
+## 11. Optional: scheduled tasks
 
-In a second terminal:
+Register the launchers with Windows Task Scheduler so the gateway and
+userbot auto-start at boot and auto-restart on crash:
 
-```powershell
-.\.venv\Scripts\activate
-python mt5-trading-assistant\fastpath\fastpath_bot.py
-```
-
-You should see `connected as @your_bot_username`, then `INBOUND …` lines
-each time a signal is forwarded. Replies appear in the same Telegram
-chat as the originating signal.
-
-## 9. Optional: scheduled tasks
-
-The daily reconstruction and nightly retrain are designed to run from
-Windows Task Scheduler (or cron on Linux):
-
-| Task | Schedule | Command |
-|---|---|---|
-| Daily analyzer | 23:30 local | `python mt5-trading-assistant\scripts\mt5_daily_analyzer.py` |
-| Nightly learner | 23:45 local | `python mt5-trading-assistant\scripts\mt5_nightly_learner.py` |
-
-Both tasks are idempotent and safe to retry.
+- `OpenClaw Gateway` → action `gateway.cmd`, trigger `at logon`, restart on failure.
+- `OpenClaw UserBot` → action `userbot_start.cmd`, trigger `at logon`,
+  restart on failure (the script also has its own 10-second
+  auto-restart loop).
 
 ## Troubleshooting
 
-If anything misbehaves, the logs are your friend:
-- `mt5-trading-assistant/fastpath/fastpath_bot.log` — every Telegram update
-  and fast-path decision
-- `mt5-trading-assistant/trade_history/signals_<date>.jsonl` — structured
-  record of each inbound signal (parse + exec timings, decision)
-- `mt5-trading-assistant/trade_history/<date>.json` — daily aggregate
+If anything misbehaves, the relevant logs are:
+
+- `workspace/skills/mt5-trading-assistant/fastpath/fastpath_bot.log` —
+  every Telegram update + fast-path decision.
+- `workspace/skills/mt5-trading-assistant/trade_history/signals_<date>.jsonl` —
+  one structured record per inbound signal.
+- `workspace/skills/mt5-trading-assistant/trade_history/<date>.json` —
+  daily reconstructed P&L.
+- `logs/gateway-restart.log` — gateway restart trail.
+- `openclaw logs tail` — live gateway log.

@@ -86,16 +86,16 @@ The auto-tuner enforces a **maximum delta per night** of `±0.1` on
 `min_rr`, `±1` on `zone_tol`, `±0.1` on `min_distance` to prevent
 oscillation; even if rules suggest a bigger move, the change is capped.
 
-## `config/openclaw.example.json`
+## `openclaw.example.json`
 
-Template for the OpenClaw gateway + agent config. Copy to
-`openclaw.json` (gitignored) and replace every `your_*` placeholder
+Template for the OpenClaw gateway + agent config at the repo root. Copy
+to `openclaw.json` (gitignored) and replace every `your_*` placeholder
 before starting the gateway. The notable knobs:
 
 - `gateway.auth.token` — bearer token, must match `GATEWAY_AUTH_TOKEN`
 - `gateway.bind` — keep `"loopback"` unless you have a Tailscale tunnel
 - `channels.telegram.botToken` — same token as `TELEGRAM_BOT_TOKEN`
-- `channels.telegram.allowFrom` — owner chat id allow-list
+- `channels.telegram.allowFrom` — owner chat-id allow-list
 - `agents.defaults.model.primary` — the model the agent uses by default
 - `models.providers.mistralai.baseUrl` — `https://integrate.api.nvidia.com/v1`
   (NVIDIA's OpenAI-compatible endpoint)
@@ -108,10 +108,14 @@ track:
 | Ignored | Template shipped |
 |---|---|
 | `.env` | `.env.example` |
-| `mt5-trading-assistant/config.py` | `mt5-trading-assistant/config.example.py` |
-| `openclaw.json` | `config/openclaw.example.json` |
-| `*.session`, `*.session-journal` | — |
-| `mt5-trading-assistant/learning.db` | — |
-| `mt5-trading-assistant/trade_history/` | — |
-| `mt5-trading-assistant/models/*.pkl` | — |
+| `openclaw.json` | `openclaw.example.json` |
+| `cron/jobs.json` | `cron/jobs.example.json` |
+| `workspace/skills/mt5-trading-assistant/config.py` | `workspace/skills/mt5-trading-assistant/config.example.py` (and `references/config_template.py`) |
+| `workspace/USER.md` | `workspace/USER.md.example` |
+| `*.session`, `*.session-journal` | — (auto-created by Telethon) |
+| `agents/`, `flows/`, `memory/`, `tasks/`, `logs/`, `cron/runs/`, `telegram/`, `canvas/`, `completions/`, `devices/`, `identity/`, `credentials/`, `plugins/`, `plugin-skills/` | — (all auto-created by OpenClaw) |
+| `workspace/.clawhub/`, `workspace/.openclaw/`, `workspace/state/` | — (workspace runtime) |
+| `workspace/skills/mt5-trading-assistant/learning.db` | — |
+| `workspace/skills/mt5-trading-assistant/trade_history/` | — |
+| `workspace/skills/mt5-trading-assistant/models/*.pkl` | — |
 | `*.log`, `*.bak*`, `*.last-good`, `*.clobbered.*` | — |
