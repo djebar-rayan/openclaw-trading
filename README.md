@@ -173,5 +173,5 @@ delta cap together form a layered safety model:
 
 ## License
 
-[MIT](LICENSE). Trading involves substantial risk of loss — see the
-LICENSE for the full disclaimer.
+[MIT](LICENSE). Trading involves substantial risk of loss — read the full
+[DISCLAIMER](DISCLAIMER.md) before connecting to a live broker.
