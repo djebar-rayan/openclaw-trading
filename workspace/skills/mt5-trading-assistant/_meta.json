@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "name": "MT5 Trading Assistant",
   "description": "Telegram-driven MetaTrader 5 trade executor with three-layer safety checks, daily P&L reconstruction, nightly ML retraining, and auto-tuned risk thresholds.",
-  "author": "Rayan DJEBAR",
+  "author": "Rayan DJEBAR <djebar.rayan75@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/djebar-rayan/openclaw-trading"
 }

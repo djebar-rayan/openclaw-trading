@@ -1,32 +1,17 @@
 OpenClaw Trading
 ================
 
-Copyright (c) 2026 Rayan DJEBAR. Released under the MIT License (see LICENSE).
+Copyright (c) 2026 Rayan DJEBAR <djebar.rayan75@gmail.com>.
+Released under the MIT License (see LICENSE).
 
-Acknowledgements
-----------------
+Runtime dependency
+------------------
 
-This project runs on top of the OpenClaw agent runtime (a third-party Node.js
-gateway). OpenClaw is required at runtime but is not redistributed in this
-repository — install it from the upstream package.
+This project runs on top of the **OpenClaw** agent runtime (a Node.js
+gateway). OpenClaw is required at runtime but is not redistributed in
+this repository — install it from the upstream npm package:
 
-The agent workspace shipped here references the following community skills.
-Each is fetched separately from its upstream homepage and is **not** included
-in this repository:
-
-- proactive-agent (Hal Labs)
-  https://github.com/hal-labs/proactive-agent
-
-- self-improving-agent (Hal Labs)
-  https://github.com/hal-labs/self-improving-agent
-
-- claw-shell, clawdhub, qmd, summarize
-  Bundled with the OpenClaw CLI; installable via `openclaw skills install <name>`.
-
-After cloning this repo, install the skills you want with:
-
-    openclaw skills install proactive-agent
-    openclaw skills install self-improving-agent
+    npm install -g openclaw
 
 Trademarks and third-party marks remain the property of their respective
 owners.

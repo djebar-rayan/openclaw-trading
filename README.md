@@ -232,14 +232,12 @@ This repo only ships what I authored. The following lives elsewhere:
   `plugins/`, `plugin-skills/` are all auto-created by
   `openclaw doctor --fix` or the gateway itself on first launch.
   They're gitignored.
-- **Community skills** — `proactive-agent`, `self-improving-agent`,
-  `claw-shell`, `clawdhub`, `qmd`, `summarize` — none are my work.
-  Install whichever you need:
+- **Community / bundled skills** — anything other than
+  `mt5-trading-assistant` is not my work. Install from the OpenClaw
+  registry as needed:
   ```bash
-  openclaw skills install proactive-agent
-  openclaw skills install self-improving-agent
+  openclaw skills install <skill-name>
   ```
-  See [`NOTICE`](NOTICE) for attribution and upstream links.
 
 ---
 
