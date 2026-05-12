@@ -49,7 +49,7 @@ OpenClaw stays active for:
 ```
 workspace/skills/mt5-trading-assistant/fastpath/
 ├── fastpath.py             # importable parser + executor
-├── test_fastpath.py        # 30+ test cases (run: python test_fastpath.py)
+├── test_fastpath.py        # 22 test cases (run: python test_fastpath.py)
 ├── bench.py                # end-to-end benchmark
 ├── fastpath_bot.py         # Telegram-side sidecar bot
 ├── start_fastpath_bot.cmd  # Windows launcher (single-instance guard)

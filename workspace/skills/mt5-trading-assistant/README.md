@@ -96,7 +96,7 @@ senders; everything else is silently dropped and logged.
 ## Tests & benchmark
 
 ```bash
-python fastpath/test_fastpath.py   # ~30 cases — pure regex, no MT5 needed
+python fastpath/test_fastpath.py   # 22 cases — pure regex, no MT5 needed
 python fastpath/bench.py           # end-to-end timing (requires live MT5)
 ```
 

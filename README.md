@@ -49,7 +49,7 @@ logic inside opaque GUIs. *Mistral Trader* is the explicit alternative:
   nightly** from a 7-day rolling P&L window, with hard limits and a max
   delta per night to prevent oscillation.
 - The fast-path is a 200-line regex parser; you can extend it to a new
-  broker or signal format in minutes. It has a 30-case test suite
+  broker or signal format in minutes. It has a 22-case test suite
   (`test_fastpath.py`) and a measurable end-to-end speed-up over the
   previous LLM-driven pipeline (`REPORT.md`).
 - An optional LLM fallback (Mistral Medium 3.5 served via NVIDIA NIM)
@@ -187,11 +187,11 @@ openclaw-trading/                       ← clone target = ~/.openclaw/
     ├── IDENTITY.md, SOUL.md, AGENTS.md, TOOLS.md, USER.md.example
     └── skills/
         └── mt5-trading-assistant/      # the centrepiece — MT5 automation suite
-            ├── README.md, SKILL.md, INSTALLATION.md
+            ├── README.md, SKILL.md, INSTALLATION.md, _meta.json
             ├── config.example.py
             ├── features.py             # ~46-column TA indicator pipeline
             ├── risk_config.json        # auto-tuned thresholds
-            ├── scripts/                # 9 entry points (buy/sell/check/snapshot/
+            ├── scripts/                # 10 entry points (buy/sell/check/snapshot/
             │                           # close/daily_analyzer/nightly_learner/
             │                           # auto_tuner/daily_report_to_telegram/
             │                           # test_mt5_kline)
