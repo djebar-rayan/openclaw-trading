@@ -1,0 +1,85 @@
+{
+  "_comment": "OpenClaw cron job manifest. Copy to cron/jobs.json (gitignored) and replace the placeholder Telegram chat-id with your own. Run 'openclaw cron list' from the CLI to manage jobs interactively.",
+  "version": 1,
+  "jobs": [
+    {
+      "id": "REPLACE_WITH_UUID_V4",
+      "agentId": "main",
+      "name": "MT5 Daily Report",
+      "enabled": true,
+      "deleteAfterRun": false,
+      "createdAtMs": 0,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 23 * * *",
+        "tz": "Europe/Berlin"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run `python skills/mt5-trading-assistant/scripts/mt5_daily_analyzer.py` via the exec tool. Return only the script's stdout (the formatted report) — the delivery layer forwards it."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "telegram",
+        "to": "123456789",
+        "accountId": "default",
+        "bestEffort": true
+      },
+      "state": {}
+    },
+    {
+      "id": "REPLACE_WITH_UUID_V4",
+      "agentId": "main",
+      "name": "MT5 Health Check",
+      "enabled": true,
+      "deleteAfterRun": false,
+      "createdAtMs": 0,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 * * * *",
+        "tz": "Europe/Berlin",
+        "staggerMs": 300000
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run `python skills/mt5-trading-assistant/scripts/mt5_check.py` via the exec tool. If stdout contains 'OK.', stay silent — do not produce any reply. Otherwise return a one-line alert describing the failure; the delivery layer forwards it."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "telegram",
+        "to": "123456789",
+        "bestEffort": true
+      },
+      "state": {}
+    },
+    {
+      "id": "REPLACE_WITH_UUID_V4",
+      "agentId": "main",
+      "name": "Nightly Learning + Auto-Tuning",
+      "enabled": true,
+      "createdAtMs": 0,
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 23 * * *",
+        "tz": "Europe/Berlin"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run `python skills/mt5-trading-assistant/scripts/mt5_nightly_learner.py` via the exec tool. Return only the script's stdout; the delivery layer forwards it."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "telegram",
+        "to": "123456789",
+        "bestEffort": true
+      },
+      "state": {}
+    }
+  ]
+}

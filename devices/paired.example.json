@@ -1,0 +1,36 @@
+{
+  "_comment": "Paired-device manifest. Real file is populated by `openclaw pair`. Each key is a 64-hex deviceId; each entry holds an operator token. Never commit the real file.",
+  "REPLACE_WITH_64_HEX_DEVICE_ID": {
+    "deviceId": "REPLACE_WITH_64_HEX_DEVICE_ID",
+    "publicKey": "REPLACE_WITH_BASE64URL_ED25519_PUBLIC_KEY",
+    "platform": "win32",
+    "clientId": "cli",
+    "clientMode": "cli",
+    "role": "operator",
+    "roles": ["operator"],
+    "scopes": [
+      "operator.admin",
+      "operator.read",
+      "operator.write",
+      "operator.approvals",
+      "operator.pairing"
+    ],
+    "approvedScopes": [
+      "operator.admin",
+      "operator.read",
+      "operator.write",
+      "operator.approvals",
+      "operator.pairing"
+    ],
+    "tokens": {
+      "operator": {
+        "token": "REPLACE_WITH_OPERATOR_TOKEN",
+        "role": "operator",
+        "scopes": ["operator.admin", "operator.read", "operator.write"],
+        "createdAtMs": 0
+      }
+    },
+    "createdAtMs": 0,
+    "approvedAtMs": 0
+  }
+}

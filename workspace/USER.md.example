@@ -1,0 +1,15 @@
+# About the operator
+
+_Fill this in. The agent reads it to tailor tone and avoid asking
+questions you have already answered. Copy to `USER.md`; that file is
+gitignored._
+
+- **Name:**
+- **Preferred address:**
+- **Timezone:**
+- **Notes:**
+
+## Context
+
+_What does the operator care about? Which signal sources do they trust?
+What style of report do they want at end-of-day?_

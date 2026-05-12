@@ -115,31 +115,78 @@ python mt5-trading-assistant/fastpath/fastpath_bot.py
 A fresh machine reaches step 7 in under ten minutes if MT5 is already
 installed.
 
+## Drop-in installation into `~/.openclaw`
+
+This repository is a structural mirror of an `~/.openclaw` directory (or
+`%USERPROFILE%\.openclaw\` on Windows). To use it as the configuration
+home for a fresh OpenClaw install:
+
+```bash
+git clone https://github.com/djebar-rayan/openclaw-trading.git ~/.openclaw
+cd ~/.openclaw
+cp .env.example .env                              # fill in your credentials
+cp config/openclaw.example.json openclaw.json     # then edit gateway/bot token
+cp mt5-trading-assistant/config.example.py mt5-trading-assistant/config.py
+cp cron/jobs.example.json cron/jobs.json          # set your Telegram chat-id
+```
+
+Then launch the gateway:
+
+```cmd
+gateway.cmd                                       # Windows
+```
+
+The `identity/`, `devices/`, `credentials/`, `flows/`, `memory/`,
+`tasks/`, `logs/`, `agents/main/sessions/` directories are auto-created
+and auto-populated on first run by `openclaw doctor --fix` or by the
+gateway itself; they're gitignored so they never leak back upstream.
+
 ## Project layout
 
 ```
-openclaw-trading/
-├── userbot.py                       # Telethon dual-listener signal relay
-├── mt5-trading-assistant/           # MT5 executor + analyzer + learner
-│   ├── scripts/                     # 9 Python entrypoints
-│   ├── fastpath/                    # regex parser + Telegram bot
-│   ├── features.py                  # 30-column indicator pipeline
-│   ├── risk_config.json             # live thresholds (auto-tuner rewrites)
-│   ├── config.example.py            # env-driven MT5 credentials
-│   ├── SKILL.md / INSTALLATION.md / README.md
-│   └── references/
-├── config/
-│   ├── openclaw.example.json        # gateway + agent config template
-│   └── persona/                     # IDENTITY / SOUL / AGENTS / TOOLS
-├── docs/
-│   ├── ARCHITECTURE.md              # in-depth component + data-flow doc
-│   ├── INSTALLATION.md              # step-by-step setup
-│   └── CONFIGURATION.md             # every env var explained
-├── .env.example
+openclaw-trading/                        ← clone target = ~/.openclaw/
+├── README.md, LICENSE, NOTICE, DISCLAIMER.md, CONTRIBUTING.md
+├── CLAUDE.md                            # operator-facing instructions
+├── .env.example                         # every credential the agent reads
 ├── requirements.txt
-├── CONTRIBUTING.md
-└── LICENSE
+├── gateway.cmd, userbot_start.cmd       # launchers (Windows Task-friendly)
+├── userbot.py                           # Telethon dual-listener relay
+│
+├── config/
+│   ├── openclaw.example.json            # gateway + agent + model + Telegram
+│   └── persona/                         # IDENTITY / SOUL / AGENTS / TOOLS
+│
+├── docs/
+│   ├── ARCHITECTURE.md                  # component + data-flow walkthrough
+│   ├── INSTALLATION.md                  # 9-step setup checklist
+│   └── CONFIGURATION.md                 # every env var + every JSON knob
+│
+├── workspace/                           # surfaced to the agent as project root
+│   ├── IDENTITY.md, SOUL.md, AGENTS.md, TOOLS.md, BOOTSTRAP.md, HEARTBEAT.md
+│   ├── USER.md.example
+│   └── skills/
+│       └── mt5-trading-assistant/       # full MT5 automation suite (same as
+│                                        # top-level mt5-trading-assistant/)
+│
+├── mt5-trading-assistant/               # top-level copy for portfolio reading
+│   ├── scripts/, fastpath/, references/
+│   ├── features.py, risk_config.json
+│   ├── config.example.py
+│   └── SKILL.md / INSTALLATION.md / README.md
+│
+├── agents/main/agent/
+│   ├── models.json                      # public model definitions (no secrets)
+│   └── auth-profiles.example.json       # NVIDIA NIM key template
+│
+├── cron/jobs.example.json               # 3 sample scheduled jobs
+├── devices/                             # paired.example.json, pending.example.json
+└── telegram/update-offset-default.example.json
 ```
+
+Runtime-only directories (`flows/`, `memory/`, `tasks/`, `logs/`, `cron/runs/`,
+`agents/main/sessions/`, `plugins/`, `plugin-skills/`, `canvas/`, `completions/`,
+`identity/`, `credentials/`) are intentionally empty in this repo and
+gitignored — OpenClaw populates them on first run.
 
 See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the deep dive,
 [`docs/INSTALLATION.md`](docs/INSTALLATION.md) for the full setup

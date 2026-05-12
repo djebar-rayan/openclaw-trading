@@ -1,48 +1,93 @@
-# ---- Secrets & credentials ----
+# =============================================================================
+# Secrets & credentials — never commit the real files. Only `.example.*` ships.
+# =============================================================================
 .env
 .env.local
 .env.*.local
+
+# Telethon authentication sessions (full Telegram-account takeover material)
 *.session
 *.session-journal
-# Real config files (only *.example.* ships)
-config.py
-config.json
-openclaw.json
-# Ed25519 / pairing keys (never commit)
-identity/
-devices/
-credentials/
 
-# ---- Runtime state ----
+# Real runtime configs (templates ship as `*.example.*`)
+config.py
+openclaw.json
+**/auth-profiles.json
+**/auth-state.json
+cron/jobs.json
+cron/jobs-state.json
+
+# Identity material — Ed25519 keypair lives here at run-time
+identity/device.json
+identity/device-auth.json
+
+# Pairing material — operator tokens for paired devices
+devices/paired.json
+devices/pending.json
+!devices/*.example.json
+
+# Credential vaults — bot allowlists, deep-link pairing handshakes
+credentials/*
+!credentials/*.example.json
+
+# Telegram channel-state markers
+telegram/*.json
+!telegram/*.example.json
+
+# =============================================================================
+# Runtime state — auto-created by the OpenClaw gateway / cron / agent
+# =============================================================================
+# SQLite stores
 *.db
 *.sqlite
 *.sqlite-shm
 *.sqlite-wal
 learning.db
-trade_history/
-models/
-*.pkl
-agents/
-flows/
-tasks/
-memory/
-cron/runs/
-logs/
-telegram/
 
-# ---- Logs & backups ----
-*.log
-*.bak
-*.bak.*
-*.last-good
-*.clobbered.*
+# Per-skill state
+**/trade_history/
+**/models/*.pkl
+
+# Agent runtime
+agents/main/sessions/
+agents/main/agent/auth-state.json
+
+# Scheduler history
+cron/runs/
+
+# Gateway state
+flows/*
+!flows/.gitkeep
+tasks/*
+!tasks/.gitkeep
+memory/*
+!memory/.gitkeep
+logs/*
+!logs/.gitkeep
+
+# Generated plugin manifests
+plugins/installs.json
+plugin-skills/
+
+# Mutable status files
 exec-approvals.json
 update-check.json
 gateway-restart.log
 gateway-restart-intent.json
 userbot.log
 
-# ---- Python ----
+# =============================================================================
+# Logs & backups
+# =============================================================================
+*.log
+*.bak
+*.bak.*
+*.last-good
+*.clobbered.*
+
+# =============================================================================
+# Python
+# =============================================================================
 __pycache__/
 *.py[cod]
 *$py.class
@@ -60,14 +105,18 @@ htmlcov/
 dist/
 build/
 
-# ---- Node (claw-shell, oxylabs, etc.) ----
+# =============================================================================
+# Node / npm
+# =============================================================================
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-store/
 
-# ---- IDE / OS ----
+# =============================================================================
+# IDE / OS
+# =============================================================================
 .vscode/
 .idea/
 *.swp
@@ -76,11 +125,10 @@ yarn-error.log*
 Thumbs.db
 desktop.ini
 
-# ---- OpenClaw harness ----
+# =============================================================================
+# OpenClaw / Claude Code harness
+# =============================================================================
 .claude/
-plugins/
-plugin-skills/
 canvas/
 completions/
 workspace/state/
-workspace/HEARTBEAT.md
