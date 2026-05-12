@@ -20,9 +20,6 @@ in this repository:
 - self-improving-agent (Hal Labs)
   https://github.com/hal-labs/self-improving-agent
 
-- oxylabs-ai-studio (DrFIRASS)
-  https://github.com/DrFIRASS/oxylabs-ai-studio-skill
-
 - claw-shell, clawdhub, qmd, summarize
   Bundled with the OpenClaw CLI; installable via `openclaw skills install <name>`.
 
@@ -30,7 +27,6 @@ After cloning this repo, install the skills you want with:
 
     openclaw skills install proactive-agent
     openclaw skills install self-improving-agent
-    openclaw skills install oxylabs-ai-studio
 
 Trademarks and third-party marks remain the property of their respective
 owners.
