@@ -1,0 +1,7 @@
+{
+  "_comment": "Copy this file, remove .example from the name, and replace all placeholder values with your real values from your local .openclaw directory. OpenClaw auto-rewrites the real file as the agent runs.",
+  "version": 1,
+  "agentId": "main",
+  "lastSeenAtMs": 0,
+  "lastSessionId": "YOUR_LAST_SESSION_ID_HERE"
+}

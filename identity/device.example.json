@@ -1,0 +1,8 @@
+{
+  "_comment": "Copy this file, remove .example from the name, and replace all placeholder values with your real values from your local .openclaw directory. The real identity/device.json is auto-generated on first launch by `openclaw doctor --fix` and contains an Ed25519 keypair that must never leave the local machine.",
+  "version": 1,
+  "deviceId": "YOUR_DEVICE_ID_HERE",
+  "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nYOUR_ED25519_PUBLIC_KEY_HERE\n-----END PUBLIC KEY-----\n",
+  "privateKeyPem": "-----BEGIN PRIVATE KEY-----\nYOUR_ED25519_PRIVATE_KEY_HERE\n-----END PRIVATE KEY-----\n",
+  "createdAtMs": 0
+}
