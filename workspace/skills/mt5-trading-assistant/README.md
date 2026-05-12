@@ -9,7 +9,7 @@ and auto-tuned risk thresholds.
 ```
 mt5-trading-assistant/
 ├── config.example.py            # env-var-driven config (copy to config.py if you prefer a file)
-├── features.py                  # ~30-column indicator pipeline used by the scorer
+├── features.py                  # ~46-column indicator pipeline used by the scorer
 ├── risk_config.json             # live risk thresholds (auto-tuner rewrites this)
 ├── scripts/
 │   ├── mt5_buy.py               # zone-form buy: volume zone_min zone_max SL TP
@@ -26,7 +26,7 @@ mt5-trading-assistant/
 ├── fastpath/
 │   ├── fastpath.py              # regex-only signal parser + executor (~1 ms parse)
 │   ├── fastpath_bot.py          # Telegram bot using fastpath, sub-1s end-to-end latency
-│   ├── test_fastpath.py         # parser unit tests (~30 cases)
+│   ├── test_fastpath.py         # parser unit tests (22 cases, all passing)
 │   ├── bench.py                 # end-to-end timing harness
 │   ├── start_fastpath_bot.cmd   # Windows launcher (single-instance guard)
 │   └── REPORT.md                # design report: 30 s → 0.84 s migration writeup

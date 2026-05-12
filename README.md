@@ -26,7 +26,7 @@
 |---|---|
 | [`workspace/skills/mt5-trading-assistant/`](workspace/skills/mt5-trading-assistant/) | Custom MT5 automation skill (~2 000 LOC Python). Zone-form order executor with three-layer safety, daily P&L reconstruction, nightly ML retraining, auto-tuned risk thresholds. |
 | [`workspace/skills/mt5-trading-assistant/fastpath/`](workspace/skills/mt5-trading-assistant/fastpath/) | Regex parser + Telegram sidecar bot replacing the LLM signal pipeline. **35–140× faster** end-to-end (30 s → 0.84 s). Full design rationale and measurements in [`fastpath/REPORT.md`](workspace/skills/mt5-trading-assistant/fastpath/REPORT.md). |
-| [`fastpath/test_fastpath.py`](workspace/skills/mt5-trading-assistant/fastpath/test_fastpath.py) | ~30 unit tests covering every parsing path (valid / noise / invalid / auto-flip / inference / close-all). |
+| [`fastpath/test_fastpath.py`](workspace/skills/mt5-trading-assistant/fastpath/test_fastpath.py) | 22 unit tests covering every parsing path (valid / noise / invalid / auto-flip / inference / close-all). |
 | [`fastpath/bench.py`](workspace/skills/mt5-trading-assistant/fastpath/bench.py) | End-to-end timing harness (parse + MT5 exec). |
 | [`scripts/test_mt5_kline.py`](workspace/skills/mt5-trading-assistant/scripts/test_mt5_kline.py) | MT5 connectivity smoke test (M1 / H1 / D1 K-lines). |
 | [`scripts/daily_report_to_telegram.py`](workspace/skills/mt5-trading-assistant/scripts/daily_report_to_telegram.py) | Standalone no-LLM daily-report sender — zero tokens per run. |
@@ -109,7 +109,7 @@ flowchart LR
 - **Auto-tuned thresholds** — `mt5_auto_tuner.py` rewrites
   `risk_config.json` from the rolling 7-day window, within hard limits
   and a per-night max delta.
-- **Tested and benchmarked** — `test_fastpath.py` (~30 cases),
+- **Tested and benchmarked** — `test_fastpath.py` (22 cases, all passing),
   `bench.py` (end-to-end timing), `test_mt5_kline.py` (MT5 connectivity
   smoke test).
 
@@ -189,7 +189,7 @@ openclaw-trading/                       ← clone target = ~/.openclaw/
         └── mt5-trading-assistant/      # the centrepiece — MT5 automation suite
             ├── README.md, SKILL.md, INSTALLATION.md
             ├── config.example.py
-            ├── features.py             # 30-column TA indicator pipeline
+            ├── features.py             # ~46-column TA indicator pipeline
             ├── risk_config.json        # auto-tuned thresholds
             ├── scripts/                # 9 entry points (buy/sell/check/snapshot/
             │                           # close/daily_analyzer/nightly_learner/

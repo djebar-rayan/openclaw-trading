@@ -105,7 +105,7 @@ Telegram, and a human terminal:
 Shared feature extractor used by both retrospective learning and the
 real-time scorer. Pulls 250-bar windows on M15, H1, and H4, computes
 SMA(20/50/200), RSI(14), MACD, Bollinger bands, ATR(14), and packages
-them into ~30 numeric columns plus signal-specific metadata
+them into ~46 numeric columns plus signal-specific metadata
 (`sl_distance_atr`, `rr_ratio`, `current_spread`).
 
 ### `risk_config.json`

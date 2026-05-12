@@ -1,6 +1,6 @@
 """Shared feature extraction for trade learning + autonomous scoring.
 
-extract_features(symbol, entry_time, side) -> dict of ~30 numeric columns,
+extract_features(symbol, entry_time, side) -> dict of ~46 numeric columns,
 computed from MT5 klines (M15 + H1 + H4) at the moment of trade entry.
 
 Used by:
@@ -31,7 +31,20 @@ except ImportError:
     pd = None
     _TA_OK = False
 
-from config import MT5_CONFIG
+try:
+    from config import MT5_CONFIG
+except ImportError:
+    # No config.py — fall back to env vars (same shape as config.example.py).
+    import os
+    MT5_CONFIG = {
+        "login": int(os.getenv("MT5_LOGIN", "0")),
+        "password": os.getenv("MT5_PASSWORD", ""),
+        "server": os.getenv("MT5_SERVER", "MetaQuotes-Demo"),
+        "symbol": os.getenv("MT5_SYMBOL", "XAUUSD"),
+        "default_volume": float(os.getenv("VOLUME_PER_TRADE", "0.05")),
+        "default_magic": 100000,
+        "deviation": 50,
+    }
 
 TIMEFRAMES = {
     "m15": getattr(mt5, "TIMEFRAME_M15", 15) if mt5 else 15,

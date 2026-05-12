@@ -7,6 +7,9 @@ Run: python test_fastpath.py
 import sys
 import time
 
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
 from fastpath import parse_signal
 
 

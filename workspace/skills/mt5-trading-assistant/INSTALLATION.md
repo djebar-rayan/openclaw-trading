@@ -89,7 +89,7 @@ once you're done.
 python workspace/skills/mt5-trading-assistant/fastpath/test_fastpath.py
 ```
 
-The test suite (~30 cases) covers every parsing path and finishes in
+The test suite (22 cases) covers every parsing path and finishes in
 under a second.
 
 ## Troubleshooting
