@@ -59,28 +59,45 @@ quarantine. Use `openclaw doctor --fix` for auto-detected repairs.
 After any direct edit, verify the file still matches `openclaw.json.last-good`
 content-wise.
 
-## Layout (only the load-bearing pieces)
+## Layout — what ships in this repo
 
 - `openclaw.example.json` — template for the gateway, channels (Telegram), agent
   defaults, model providers, plugin enablement. Copy to `openclaw.json`.
 - `.env.example` — template for every credential the agent reads at run-time.
 - `userbot.py` — Telethon dual-listener that filters inbound Telegram signals
   before forwarding to the OpenClaw inbox bot.
-- `agents/main/` — the single configured agent.
-  - `agent/` — auth-profiles template, model definitions cache.
-  - `sessions/` — append-only conversation logs (gitignored; auto-created).
+- `gateway.cmd`, `userbot_start.cmd` — Windows launchers.
+- `cron/jobs.example.json` — three scheduled jobs (daily report, hourly
+  health-check, nightly learner). Copy to `cron/jobs.json`.
 - `workspace/` — the agent's working directory, surfaced as project root.
   - `IDENTITY.md`, `SOUL.md`, `AGENTS.md`, `TOOLS.md`, `USER.md.example`
-  - `BOOTSTRAP.md` (first-run prompt), `HEARTBEAT.md` (must stay empty).
-  - `skills/mt5-trading-assistant/` — the trading executor (see its
-    `SKILL.md` for full reference).
-- `cron/jobs.example.json` — sample scheduled jobs (daily report, hourly
-  health-check, nightly learner). Copy to `cron/jobs.json`.
-- `flows/`, `tasks/`, `memory/` — runtime SQLite stores; auto-created.
-- `devices/paired.example.json` — pairing template.
-- `plugin-skills/`, `plugins/` — managed by the gateway; auto-populated.
-- `telegram/` — bot update offset and per-channel state markers.
-- `logs/` — gateway logs (auto-created, gitignored).
+  - `skills/mt5-trading-assistant/` — the trading executor (`scripts/`,
+    `fastpath/`, `features.py`, `risk_config.json`, `references/`,
+    `SKILL.md`, `README.md`, `INSTALLATION.md`, `_meta.json`).
+
+## Auto-created on first run (gitignored, not in this repo)
+
+The gateway / `openclaw doctor --fix` creates these:
+
+- `agents/main/agent/{auth-profiles,auth-state,models}.json` — per-agent
+  auth state and model cache.
+- `agents/main/sessions/*.jsonl` — append-only conversation logs.
+- `identity/{device,device-auth}.json` — Ed25519 keypair + operator token.
+- `devices/{paired,pending}.json` — pairing state.
+- `credentials/telegram-*.json` — channel allow-lists.
+- `flows/`, `tasks/`, `memory/` — runtime SQLite stores.
+- `cron/runs/<job-id>/*.json` — scheduled-task execution history.
+- `telegram/update-offset-default.json` — bot polling cursor.
+- `logs/{config-audit.jsonl, config-health.json, gateway-restart.log}`.
+- `plugins/installs.json`, `plugin-skills/` — plugin registry cache.
+- `canvas/index.html`, `completions/openclaw.{zsh,bash,fish,ps1}` — UI
+  + shell-completion files shipped by OpenClaw.
+- `workspace/.clawhub/lock.json`, `workspace/.openclaw/workspace-state.json`,
+  `workspace/state/` — workspace runtime state.
+- `workspace/HEARTBEAT.md` — empty marker the gateway recreates on demand
+  (push/reactive event loop is configured; the file stays empty).
+- `workspace/BOOTSTRAP.md` — OpenClaw's first-run onboarding template
+  (the gateway only writes it on a fresh workspace).
 
 ## Common operations
 

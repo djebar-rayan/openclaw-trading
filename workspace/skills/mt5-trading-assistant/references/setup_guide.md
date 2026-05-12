@@ -11,8 +11,10 @@
 
 ## Install
 
+From the repo root:
+
 ```bash
-pip install -r ../../requirements.txt
+pip install -r requirements.txt
 ```
 
 ## Configure the MT5 client

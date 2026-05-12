@@ -34,7 +34,7 @@ You also need:
 - [ ] `pip install -r requirements.txt` succeeds from a clean venv.
 - [ ] No real credentials, account numbers, or session files in the diff.
 - [ ] If you touched a parser or executor, a worked example is added under
-      `mt5-trading-assistant/fastpath/` or referenced in `docs/`.
+      `workspace/skills/mt5-trading-assistant/fastpath/` or referenced in `docs/`.
 - [ ] Volume parameter stays at `0.05` — the risk guard is intentional.
 - [ ] If you added a new env var, document it in `.env.example` **and**
       `docs/CONFIGURATION.md`.
