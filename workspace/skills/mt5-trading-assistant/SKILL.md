@@ -118,6 +118,29 @@ plugs into MT5 without going through an LLM. `fastpath/fastpath_bot.py`
 wraps it as a Telegram bot using long-polling — end-to-end latency from
 signal reception to MT5 fill is about 1 second.
 
+`fastpath/test_fastpath.py` provides unit tests covering every parsing
+path (valid signals, noise, invalid, auto-flip, inference, close-all);
+`fastpath/bench.py` measures end-to-end timing; `fastpath/REPORT.md`
+documents the design and the 35–140× speed-up over the original LLM
+pipeline.
+
+## Smoke-test the MT5 wiring
+
+```bash
+python scripts/test_mt5_kline.py
+```
+
+Confirms the MT5 desktop client is reachable, the configured account
+logs in, the symbol is selectable, and K-line data flows at M1 / H1 / D1.
+
+## Standalone daily report
+
+`scripts/daily_report_to_telegram.py` runs `mt5_daily_analyzer.py` +
+`mt5_auto_tuner.py` and posts the report to Telegram without going
+through the LLM. Used as a Windows Scheduled Task via
+`scripts/daily_report.cmd`. Reads `TELEGRAM_BOT_TOKEN` and
+`TELEGRAM_OWNER_CHAT_ID` from the environment.
+
 ## Security
 
 - Never commit `config.py`, `.env`, `learning.db`, or `trade_history/`.

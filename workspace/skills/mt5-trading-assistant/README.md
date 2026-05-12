@@ -19,10 +19,17 @@ mt5-trading-assistant/
 │   ├── mt5_snapshot.py          # one-shot account snapshot
 │   ├── mt5_daily_analyzer.py    # reconstructs trades, writes trade_history/<date>.json
 │   ├── mt5_nightly_learner.py   # ingests history, retrains a RandomForest scorer
-│   └── mt5_auto_tuner.py        # adjusts risk_config.json from rolling stats
+│   ├── mt5_auto_tuner.py        # adjusts risk_config.json from rolling stats
+│   ├── test_mt5_kline.py        # connectivity smoke test (M1/H1/D1 K-lines)
+│   ├── daily_report_to_telegram.py  # standalone (no-LLM) daily report sender
+│   └── daily_report.cmd         # Windows Scheduled Task launcher for the daily report
 ├── fastpath/
 │   ├── fastpath.py              # regex-only signal parser + executor (~1 ms parse)
-│   └── fastpath_bot.py          # Telegram bot using fastpath, sub-1s end-to-end latency
+│   ├── fastpath_bot.py          # Telegram bot using fastpath, sub-1s end-to-end latency
+│   ├── test_fastpath.py         # parser unit tests (~30 cases)
+│   ├── bench.py                 # end-to-end timing harness
+│   ├── start_fastpath_bot.cmd   # Windows launcher (single-instance guard)
+│   └── REPORT.md                # design report: 30 s → 0.84 s migration writeup
 └── references/
     ├── config_template.py
     └── setup_guide.md
@@ -85,6 +92,21 @@ python fastpath/fastpath_bot.py
 Reads `TELEGRAM_BOT_TOKEN`, `FASTPATH_ALLOWED_SENDERS`,
 `FASTPATH_LLM_FALLBACK` from the environment. Replies inline to allowed
 senders; everything else is silently dropped and logged.
+
+## Tests & benchmark
+
+```bash
+python fastpath/test_fastpath.py   # ~30 cases — pure regex, no MT5 needed
+python fastpath/bench.py           # end-to-end timing (requires live MT5)
+```
+
+The test suite covers every parsing path: valid range / single-price
+signals, noise filtering, invalid → LLM fallback, label-vs-layout
+auto-flip, direction inference, close-all detection, lower-case input,
+comma-decimal numbers.
+
+For the migration rationale (30 s LLM round-trip → 0.84 s fast-path, a
+35–140× speed-up), see [`fastpath/REPORT.md`](fastpath/REPORT.md).
 
 See [`references/setup_guide.md`](references/setup_guide.md) for the full
 broker / credential / AutoTrading setup.
